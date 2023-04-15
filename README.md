@@ -17,6 +17,8 @@ We can verify the versions of NFS by running the following cat command:
 
 `sudo cat /proc/fs/nfsd/versions`
 
+<img src="./screenshots/1-NFS-Server-versions.png" width="80%" />
+
 ### Step 1 (B): Make shared NFS directory
 We will create a directory named **nfs_shared** that is going to be shared by all client systems. To do so, run the following command:
 
@@ -26,6 +28,8 @@ We will create a directory named **nfs_shared** that is going to be shared by al
 Set the permissions of the created **nfs_shared** directory so that all client machines can easily access it:
 
 `sudo chown -R nobody:nogroup /mnt/nfs_shared/`
+
+<img src="./screenshots/2-shared-directory-permissions.png" width="80%" />
 
 ### Step 1 (D): Set file permissions
 Set the file permissions as required. In our case, we have allocated the read, write, and execute permissions to the **nfs_shared** directory files:
@@ -42,6 +46,8 @@ Now, it is up to us whether we want to grant access to the entire **subnet**, **
 Following statement is used to grant access to a subnet. 
 
 `/mnt/nfs_share 10.0.2.15/24(rw,sync,no_subtree_check)`
+
+<img src="./screenshots/3-NFS-Access-grant.png" width="80%" />
 
 ### Step 1 (F): Exporting NFS directory
 Following command is used to export the NFS shared directory:
@@ -63,4 +69,5 @@ Enable Firewall with **ufw** command and **enable** option:
 
 `sudo ufw enable`
 
+<img src="./screenshots/4-ufw-firewall.png" width="80%" />
 
