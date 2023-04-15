@@ -41,11 +41,11 @@ In this step, we will grant access to the client system for accessing the NFS se
 
 `sudo nano /etc/exports`
 
-Now, it is up to us whether we want to grant access to the entire **subnet**, **single** or **multiple** clients. For instance, we will permit can entire subnet **10.0.2.15/24** to access the NFS shared:
+Now, it is up to us whether we want to grant access to the entire **subnet**, **single** or **multiple** clients. For instance, we will permit can entire subnet **192.168.56.101/24** to access the NFS shared:
 
 Following statement is used to grant access to a subnet. 
 
-`/mnt/nfs_share 10.0.2.15/24(rw,sync,no_subtree_check)`
+`/mnt/nfs_share 192.168.56.101/24(rw,sync,no_subtree_check)`
 
 <img src="./screenshots/3-NFS-Access-grant.png" width="80%" />
 
@@ -62,12 +62,14 @@ Now restart the NFS server using following command:
 ### Step 1 (H): RestartGrant Firewall access
 It is time to grant the Firewall access to the client system with the following **ufw** command:
 
-`sudo ufw allow from 10.0.2.15/24 to any port nfs`
+`sudo ufw allow from 192.168.56.101/24 to any port nfs`
 
 ### Step 1 (I): Enable Firewall
 Enable Firewall with **ufw** command and **enable** option:
 
 `sudo ufw enable`
 
-<img src="./screenshots/4-ufw-firewall.png" width="80%" />
+Status of the `ufw` firewall can be seen in following screenshot. 
+
+<img src="./screenshots/4-ufw-firewall.png" width="60%" />
 
