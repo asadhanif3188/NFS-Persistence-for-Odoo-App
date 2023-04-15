@@ -73,3 +73,33 @@ Status of the `ufw` firewall can be seen in following screenshot.
 
 <img src="./screenshots/4-ufw-firewall.png" width="60%" />
 
+## Step 2: NFS Client Configuration 
+Now we need to configure our NFS client so that it can access the shared directory of NFS Server. 
+
+In our case we want to access the directory on our **Minikube** environment. So for our case Minikube is the client. 
+
+### Step 2 (A): SSH into Minikube
+Minikube provides a nice command to SSH into it. To SSH into our Minikube instance use: `minikube ssh` command.
+
+<img src="./screenshots/5-minikube-ssh.png" width="60%" />
+
+### Step 2 (B): Verify Communication between Minikube and NFS Server
+It is a good idea to verify the Minikube VM can communicate with the NFS server host. Use ping to verify communication by using the IP address of the Linux host that is hosting the NFS server, i.g. `192.168.56.102` . Limit the ping command to 2 with `-c 2` so it will stop pinging.
+
+`ping 192.168.56.102 -c 2`
+
+<img src="./screenshots/6-minikube-ping-nfs-server.png" width="60%" />
+
+As we can see from the figure, our minikube can communicate sucessfully with the NFS server. 
+
+### Step 2 (C): Mount in Minikube as the NFS client
+Previous step has ensured that the client and server can communicate, lets set up the NFS client in Minikube.
+
+Create a **mount** in Minikube as the NFS client. Kubernetes will handle mapping the directories and mounts for your containers and volumeMounts.
+
+Create an NFS mount using following command:
+
+`mount -t nfs 192.168.56.102:/mnt/nfs_shared /mnt`
+
+The mount command needs the source that is the NFS server IP address, i.e. `192.168.56.102` and absolute path to the shared directory, i.e. `/mnt/nfs_shared`. And this will mount in `/mnt` in Minikube so the Pods will have access.
+
