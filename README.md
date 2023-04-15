@@ -48,3 +48,19 @@ Following command is used to export the NFS shared directory:
 
 `sudo exportfs -a`
 
+### Step 1 (G): Restart NFS server
+Now restart the NFS server using following command: 
+
+`sudo systemctl restart nfs-kernel-server`
+
+### Step 1 (H): RestartGrant Firewall access
+It is time to grant the Firewall access to the client system with the following **ufw** command:
+
+`sudo ufw allow from 10.0.2.15/24 to any port nfs`
+
+### Step 1 (I): Enable Firewall
+Enable Firewall with **ufw** command and **enable** option:
+
+`sudo ufw enable`
+
+
