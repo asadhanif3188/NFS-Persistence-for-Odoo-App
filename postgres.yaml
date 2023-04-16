@@ -40,3 +40,16 @@ spec:
         - name: postgredb
           persistentVolumeClaim:
             claimName: postgresql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  labels:
+    app: postgres 
+spec:
+  selector:
+    app: postgres
+  type: LoadBalancer 
+  ports:
+    - port: 5432 

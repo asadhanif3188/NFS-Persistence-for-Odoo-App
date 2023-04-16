@@ -163,6 +163,8 @@ See the PVC using following command.
 
 `kubectl get pvc`
 
+<img src="./screenshots/8-postgres-pvc.png" width="80%" />
+
 ### Step 4 (B): Create a PersistentVolumeClaim (PVC) for Odoo 
 
 File name: **odoo-pvc.yaml**
@@ -188,6 +190,8 @@ Apply this PVC using following command.
 See the PVC using following command.
 
 `kubectl get pvc`
+
+<img src="./screenshots/9-odoo-pvc.png" width="80%" />
 
 ## Step 5: Other K8s Manifest files
 To deploy the Oddo and Postgres we also need to create various manifest files, as listed below:
@@ -226,6 +230,8 @@ Apply the ConfigMap and Secret using following commands.
 `kubectl apply -f app-configmap.yaml`
 
 `kubectl apply -f app-secret.yaml`
+
+<img src="./screenshots/10-configmap-and-secret.png" width="70%" />
 
 ### Step 5 (B): Postgres Deployment and Service 
 In this section we are going to define **deployment** and **service** for Postgre database. 
