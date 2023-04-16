@@ -299,6 +299,7 @@ Apply the Deployment and Service using following command.
 
 `kubectl apply -f postgres.yaml`
 
+<img src="./screenshots/11-postgres-deployment-and-service.png" width="70%" />
 
 ### Step 5 (C): Odoo Deployment and Service 
 Let's define **deployment** and **service** for Oddo app. 
