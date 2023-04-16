@@ -203,9 +203,8 @@ kind: ConfigMap
 metadata:
   name: postgres-config
 data:
-  POSTGRES_DB: postgres-service
-  POSTGRES_USER: admin
-  POSTGRES_PASSWORD: mypassword
+  database_url: postgres-service
+  database_username: admin
 ```
 
 Following **Secret** is being used.
@@ -217,6 +216,6 @@ metadata:
   name: postgres-secret
 type: Opaque
 data:
-  POSTGRES_PASSWORD: LW4gInJvb3QiIA0K
+  database_password: LW4gInJvb3QiIA0K
 ```
 
