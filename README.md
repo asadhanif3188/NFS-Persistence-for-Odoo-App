@@ -219,3 +219,64 @@ data:
   database_password: LW4gInJvb3QiIA0K
 ```
 
+### Step 5 (B): Postgres Deployment and Service 
+In this section we are going to define deployment and service for Postgre database. 
+
+Create a file **postgress.yaml**. 
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.1 
+          ports:
+            - containerPort: 5432 
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef: 
+                  name: app-configmap
+                  key: database_url
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef: 
+                  name: app-configmap
+                  key: database_username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef: 
+                  name: app-secret
+                  key: database_password
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgresql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  labels:
+    app: postgres 
+spec:
+  selector:
+    app: postgres
+  type: LoadBalancer 
+  ports:
+    - port: 5432 
+```
