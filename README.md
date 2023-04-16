@@ -201,7 +201,7 @@ Following **ConfigMap** is being used.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-config
+  name: app-configmap
 data:
   database_url: postgres-service
   database_username: admin
@@ -213,7 +213,7 @@ Following **Secret** is being used.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: postgres-secret
+  name: app-secret
 type: Opaque
 data:
   database_password: LW4gInJvb3QiIA0K
