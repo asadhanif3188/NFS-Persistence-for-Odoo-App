@@ -209,6 +209,7 @@ kind: ConfigMap
 metadata:
   name: app-configmap
 data:
+  postgres_db: postgresdb
   database_url: postgres-service
   database_username: admin
 ```
@@ -262,7 +263,7 @@ spec:
               valueFrom:
                 configMapKeyRef: 
                   name: app-configmap
-                  key: database_url
+                  key: postgres_db
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef: 

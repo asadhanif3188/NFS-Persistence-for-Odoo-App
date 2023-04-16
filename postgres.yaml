@@ -22,7 +22,7 @@ spec:
               valueFrom:
                 configMapKeyRef: 
                   name: app-configmap
-                  key: database_url
+                  key: postgres_db
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef: 

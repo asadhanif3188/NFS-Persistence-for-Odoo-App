@@ -3,5 +3,6 @@ kind: ConfigMap
 metadata:
   name: app-configmap
 data:
+  postgres_db: postgresdb
   database_url: postgres-service
   database_username: admin
