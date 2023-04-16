@@ -118,7 +118,7 @@ parameters:
   server: 192.168.56.102
   path: /mnt/nfs_shared
 reclaimPolicy: Delete
-volumeBindMode: Immediate
+volumeBindingMode: Immediate
 mountOptions: 
   - hard
   - nfsvers=4.1
