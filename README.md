@@ -219,8 +219,14 @@ data:
   database_password: LW4gInJvb3QiIA0K
 ```
 
+Apply the ConfigMap and Secret using following commands.
+
+`kubectl apply -f app-configmap.yaml`
+
+`kubectl apply -f app-secret.yaml`
+
 ### Step 5 (B): Postgres Deployment and Service 
-In this section we are going to define deployment and service for Postgre database. 
+In this section we are going to define **deployment** and **service** for Postgre database. 
 
 Create a file **postgress.yaml**. 
 ```
@@ -280,3 +286,71 @@ spec:
   ports:
     - port: 5432 
 ```
+
+Apply the Deployment and Service using following command.
+
+`kubectl apply -f postgres.yaml`
+
+
+### Step 5 (C): Odoo Deployment and Service 
+Let's define **deployment** and **service** for Oddo app. 
+
+Create a file **odoo-app.yaml**. 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-deployment
+  labels:
+    app: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo
+  template:
+    metadata:
+      labels:
+        app: odoo
+    spec:
+      containers:
+      - name: odoo
+        image: odoo:14.0
+        ports:
+        - containerPort: 8069
+        env:
+        - name: HOST
+          valueFrom:
+            configMapKeyRef: 
+              name: app-configmap
+              key: database_url
+        - name: USER
+          valueFrom:
+            configMapKeyRef: 
+              name: app-configmap
+              key: database_username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef: 
+              name: app-secret
+              key: database_password
+
+---
+apiVersion: v1
+kind: Service
+metadata:    
+  name: odoo-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: odoo
+  ports:
+    - protocol: TCP
+      port: 8069
+      targetPort: 8069
+```
+
+Apply the Deployment and Service using following command.
+
+`kubectl apply -f odoo-app.yaml`

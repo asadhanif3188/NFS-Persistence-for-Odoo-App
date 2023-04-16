@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-deployment
+  labels:
+    app: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo
+  template:
+    metadata:
+      labels:
+        app: odoo
+    spec:
+      containers:
+      - name: odoo
+        image: odoo:14.0
+        ports:
+        - containerPort: 8069
+        env:
+        - name: HOST
+          valueFrom:
+            configMapKeyRef: 
+              name: app-configmap
+              key: database_url
+        - name: USER
+          valueFrom:
+            configMapKeyRef: 
+              name: app-configmap
+              key: database_username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef: 
+              name: app-secret
+              key: database_password
+
+---
+apiVersion: v1
+kind: Service
+metadata:    
+  name: odoo-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: odoo
+  ports:
+    - protocol: TCP
+      port: 8069
+      targetPort: 8069
