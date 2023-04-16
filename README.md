@@ -335,7 +335,13 @@ spec:
             secretKeyRef: 
               name: app-secret
               key: database_password
-
+        volumeMounts:
+          - mountPath: /var/lib/odoo
+            name: odoo-data
+      volumes:
+        - name: odoo-data
+          persistentVolumeClaim:
+            claimName: odoo-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -354,3 +360,4 @@ spec:
 Apply the Deployment and Service using following command.
 
 `kubectl apply -f odoo-app.yaml`
+
