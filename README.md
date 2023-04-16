@@ -103,3 +103,120 @@ Create an NFS mount using following command:
 
 The mount command needs the source that is the NFS server IP address, i.e. `192.168.56.102` and absolute path to the shared directory, i.e. `/mnt/nfs_shared`. And this will mount in `/mnt` in Minikube so the Pods will have access.
 
+## Step 3: Create a StorageClass NFS provisioning  
+Folllowing stoage class contents will be used to provision the storage automatically. 
+
+File Name: **nfs-storage-class.yaml**. 
+
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-storage
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 192.168.56.102
+  path: /mnt/nfs_shared
+reclaimPolicy: Delete
+volumeBindMode: Immediate
+mountOptions: 
+  - hard
+  - nfsvers=4.1
+```
+
+Apply this storage class using following command.
+
+`kubectl apply -f nfs-storage-class.yaml`
+
+See the storage class using following command.
+
+`kubectl get sc`
+
+## Step 4: Create PersistentVolumeClaims (PVCs) for Postgres and Odoo 
+Since we are going to deploy Odoo application alongwith its database. To persist the data for postgres and odoo we need to create PVCs for **Postgres** and **Odoo**. 
+
+### Step 4 (A): Create a PersistentVolumeClaim (PVC) for Postgres 
+
+File name: **postgresql-pvc.yaml**
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc
+spec:
+  storageClassName: nfs-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+Apply this PVC using following command.
+
+`kubectl apply -f postgresql-pvc.yaml`
+
+See the PVC using following command.
+
+`kubectl get pvc`
+
+### Step 4 (B): Create a PersistentVolumeClaim (PVC) for Odoo 
+
+File name: **odoo-pvc.yaml**
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: odoo-pvc
+spec:
+  storageClassName: nfs-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+Apply this PVC using following command.
+
+`kubectl apply -f odoo-pvc.yaml`
+
+See the PVC using following command.
+
+`kubectl get pvc`
+
+## Step 5: Other K8s Manifest files
+To deploy the Oddo and Postgres we also need to create various manifest files, as listed below:
+- ConfigMap
+- Secret 
+- Deployments (for `Odoo` and `Postgres`)
+- Services (for `Odoo` and `Postgres`)
+
+### Step 5 (A): Create ConfigMap and Secret 
+Following **ConfigMap** is being used.
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  POSTGRES_DB: postgres-service
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: mypassword
+```
+
+Following **Secret** is being used.
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+data:
+  POSTGRES_PASSWORD: LW4gInJvb3QiIA0K
+```
+
