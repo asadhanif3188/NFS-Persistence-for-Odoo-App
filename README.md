@@ -113,7 +113,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: nfs-storage
-provisioner: nfs.csi.k8s.io
+provisioner: k8s.io/minikube-hostpath
 parameters:
   server: 192.168.56.102
   path: /mnt/nfs_shared
@@ -131,6 +131,8 @@ Apply this storage class using following command.
 See the storage class using following command.
 
 `kubectl get sc`
+
+<img src="./screenshots/7-storage-class.png" width="80%" />
 
 ## Step 4: Create PersistentVolumeClaims (PVCs) for Postgres and Odoo 
 Since we are going to deploy Odoo application alongwith its database. To persist the data for postgres and odoo we need to create PVCs for **Postgres** and **Odoo**. 
